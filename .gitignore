@@ -3,3 +3,6 @@
 /project/target/
 /target/
 /target/scala-3.3.1/classes/
+
+/.bsp/
+/.idea/
