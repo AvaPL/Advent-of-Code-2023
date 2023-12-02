@@ -5,12 +5,12 @@ import scala.annotation.tailrec
 
 @main def puzzle2(): Unit = {
   val lines = PuzzleInputParser.parsedInput
-  val calibrationLines = lines
+  val calibrationValues = lines
     .map(extractFirstAndLastDigit)
     .map { (firstDigit, lastDigit) =>
       firstDigit * 10 + lastDigit
     }
-  val result = calibrationLines.sum
+  val result = calibrationValues.sum
   println(result)
 }
 
@@ -38,6 +38,6 @@ private val digitsMap = Map(
   ("7", "seven") -> 7,
   ("8", "eight") -> 8,
   ("9", "nine") -> 9
-).flatMap { case ((digitString1, digitString2), value) =>
+).flatMap { case (digitString1, digitString2) -> value =>
   Map(digitString1 -> value, digitString2 -> value)
 }

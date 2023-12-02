@@ -3,12 +3,12 @@ package day1
 
 @main def puzzle1(): Unit = {
   val lines = PuzzleInputParser.parsedInput
-  val calibrationLines = lines
+  val calibrationValues = lines
     .map(extractDigits)
     .map { digits =>
       digits.head * 10 + digits.last
     }
-  val result = calibrationLines.sum
+  val result = calibrationValues.sum
   println(result)
 }
 
