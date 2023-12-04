@@ -4,7 +4,8 @@ package day3
 @main def puzzle2(): Unit = {
   val schematic = PuzzleInputParser.parsedInput
   val gearPairs = determineGearPairs(schematic)
-  val result = gearPairs.map((first, second) => first.value * second.value).sum
+  val gearRatios = gearPairs.map((first, second) => first.value * second.value)
+  val result = gearRatios.sum
   println(result)
 }
 
