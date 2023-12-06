@@ -32,19 +32,19 @@ case class RangeMap(
     rangeMappers: List[RangeMapper]
 ) {
 
-  def mapRanges(ranges: List[RangeLong]): List[RangeLong] = 
+  def mapRanges(ranges: List[RangeLong]): List[RangeLong] =
     ranges.flatMap(mapRange)
 
   private def mapRange(range: RangeLong): List[RangeLong] = {
-    val remainingRanges = mutable.Set(range)
-    val mappedRanges = mutable.Set.empty[RangeLong]
+    val mappedRanges = mutable.ListBuffer.empty[RangeLong]
+    val remainingRanges = mutable.ListBuffer(range)
     rangeMappers.foreach { mapper =>
-      val rangesToMap = remainingRanges.toSet
+      val rangesToMap = remainingRanges.toList
       rangesToMap.foreach { range =>
         val (mappedRange, notMappedRanges) = mapper.mapRange(range)
         mappedRange.foreach { mappedRange =>
-          mappedRanges.add(mappedRange)
-          remainingRanges.remove(range)
+          mappedRanges.addOne(mappedRange)
+          remainingRanges.remove(remainingRanges.indexOf(range))
           remainingRanges.addAll(notMappedRanges)
         }
       }
