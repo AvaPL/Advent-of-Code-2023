@@ -12,11 +12,11 @@ private def determinePartNumbers(schematic: Schematic) =
   schematic.numbers.filter(isPartNumber(schematic.symbols))
 
 private def isPartNumber(symbols: List[Symbol])(number: Number) = {
-  val adjacentLocations = getAdjacentLocations(number)
+  val adjacentLocations = getAdjacentLocationsToNumber(number)
   symbols.exists(symbol => adjacentLocations.contains(symbol.location))
 }
 
-private def getAdjacentLocations(number: Number) = {
+private def getAdjacentLocationsToNumber(number: Number) = {
   val numberRowIndex = number.occupiedLocations.head.row
   for {
     rowIndex <- (numberRowIndex - 1) to (numberRowIndex + 1)

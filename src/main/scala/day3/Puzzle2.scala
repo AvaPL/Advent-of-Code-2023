@@ -20,11 +20,11 @@ private def determineGearPairs(schematic: Schematic) = {
 }
 
 private def getAdjacentNumbers(numbers: List[Number])(symbolLocation: Location) = {
-  val adjacentLocations = getAdjacentLocations(symbolLocation)
+  val adjacentLocations = getAdjacentLocationsToSymbol(symbolLocation)
   numbers.filter(number => adjacentLocations.exists(number.occupiedLocations.contains))
 }
 
-private def getAdjacentLocations(symbolLocation: Location)= {
+private def getAdjacentLocationsToSymbol(symbolLocation: Location)= {
   val Location(row, column) = symbolLocation
   for {
     rowIndex <- (row - 1) to (row + 1)

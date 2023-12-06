@@ -2,6 +2,7 @@ package io.github.avapl
 package day5.puzzle2
 
 import scala.collection.immutable.NumericRange
+import scala.collection.mutable
 import scala.util.chaining.*
 
 type RangeLong = NumericRange[Long]
@@ -31,7 +32,25 @@ case class RangeMap(
     rangeMappers: List[RangeMapper]
 ) {
 
-  def mapRanges(ranges: List[RangeLong]): List[RangeLong] = ???
+  def mapRanges(ranges: List[RangeLong]): List[RangeLong] = 
+    ranges.flatMap(mapRange)
+
+  private def mapRange(range: RangeLong): List[RangeLong] = {
+    val remainingRanges = mutable.Set(range)
+    val mappedRanges = mutable.Set.empty[RangeLong]
+    rangeMappers.foreach { mapper =>
+      val rangesToMap = remainingRanges.toSet
+      rangesToMap.foreach { range =>
+        val (mappedRange, notMappedRanges) = mapper.mapRange(range)
+        mappedRange.foreach { mappedRange =>
+          mappedRanges.add(mappedRange)
+          remainingRanges.remove(range)
+          remainingRanges.addAll(notMappedRanges)
+        }
+      }
+    }
+    (mappedRanges ++ remainingRanges).toList
+  }
 }
 
 case class RangeMapper(
@@ -42,21 +61,16 @@ case class RangeMapper(
 
   val lastSourceNumber: Long = sourceNumber + length - 1
 
-  def mapRange(range: RangeLong): (Option[RangeLong], NotMappedRanges) =
-    if (areOverlapping(range)) {
-      val maxStart = sourceNumber.max(range.start)
-      val minEnd = lastSourceNumber.min(range.last)
+  def mapRange(range: RangeLong): (Option[RangeLong], NotMappedRanges) = {
+    val maxStart = sourceNumber.max(range.start)
+    val minEnd = lastSourceNumber.min(range.last)
+    val areOverlapping = maxStart <= minEnd
+    if (areOverlapping) {
       val leftNonOverlapping = range.start until maxStart
       val mappedOverlapping =
         (destinationNumber + (maxStart - sourceNumber)) to (destinationNumber + (minEnd - sourceNumber))
       val rightNonOverlapping = (minEnd + 1) to range.last
       (Some(mappedOverlapping), List(leftNonOverlapping, rightNonOverlapping).filter(_.nonEmpty))
     } else (None, List(range))
-
-  // TODO: Does it have to be a separate method?
-  def areOverlapping(range: RangeLong): Boolean = {
-    val maxStart = sourceNumber.max(range.start)
-    val minEnd = lastSourceNumber.min(range.last)
-    maxStart <= minEnd
   }
 }
