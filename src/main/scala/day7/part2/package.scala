@@ -1,9 +1,9 @@
 package io.github.avapl
 package day7.part2
 
-import math.Ordered.orderingToOrdered
+import day7.*
 
-type Bid = Int
+import scala.math.Ordered.orderingToOrdered
 
 case class Hand(
     cards: List[Card]
@@ -11,16 +11,13 @@ case class Hand(
 
   lazy val handType: HandType = {
     val (jokers, regularCards) = cards.partition(_ == Joker)
-    if (jokers.nonEmpty) determineHandTypeWithJokers(regularCards, jokersCount = jokers.size)
+    if (jokers.nonEmpty)
+      determineHandTypeWithJokers(regularCards, jokersCount = jokers.size)
     else determineHandType(cards)
   }
 
   private def determineHandTypeWithJokers(regularCards: List[Card], jokersCount: Int) = {
-    val replacementCardsCombinations = for {
-      replacementCard <- replacementCards
-    } yield for {
-      _ <- 0 until jokersCount
-    } yield replacementCard
+    val replacementCardsCombinations = replacementCards.map(List.fill(jokersCount))
     replacementCardsCombinations.map(regularCards ++ _).map(determineHandType).max
   }
 
@@ -39,11 +36,12 @@ case class Hand(
       case counts if counts.size == 5 => HighCard
   }
 
-  private def cardToCount(cards: List[Card]) = cards
-    .groupBy(identity)
-    .map { case (card, group) =>
-      (card, group.size)
-    }
+  private def cardToCount(cards: List[Card]) =
+    cards
+      .groupBy(identity)
+      .map { case (card, group) =>
+        (card, group.size)
+      }
 }
 
 object Hand {
@@ -85,27 +83,5 @@ object Card {
     case Numeral3  => 3
     case Numeral2  => 2
     case Joker     => 1
-  }
-}
-
-sealed trait HandType
-case object FiveOfAKind extends HandType
-case object FourOfAKind extends HandType
-case object FullHouse extends HandType
-case object ThreeOfAKind extends HandType
-case object TwoPair extends HandType
-case object OnePair extends HandType
-case object HighCard extends HandType
-
-object HandType {
-
-  implicit val ordering: Ordering[HandType] = Ordering.by {
-    case FiveOfAKind  => 7
-    case FourOfAKind  => 6
-    case FullHouse    => 5
-    case ThreeOfAKind => 4
-    case TwoPair      => 3
-    case OnePair      => 2
-    case HighCard     => 1
   }
 }

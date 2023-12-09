@@ -1,6 +1,7 @@
 package io.github.avapl
 package day7.part2
 
+import day7.Bid
 import util.InputParser
 import util.StringOps.*
 

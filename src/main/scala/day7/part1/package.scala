@@ -1,9 +1,9 @@
 package io.github.avapl
 package day7.part1
 
-import math.Ordered.orderingToOrdered
+import day7.*
 
-type Bid = Int
+import scala.math.Ordered.orderingToOrdered
 
 case class Hand(
     cards: List[Card]
@@ -67,27 +67,5 @@ object Card {
     case Numeral4  => 4
     case Numeral3  => 3
     case Numeral2  => 2
-  }
-}
-
-sealed trait HandType
-case object FiveOfAKind extends HandType
-case object FourOfAKind extends HandType
-case object FullHouse extends HandType
-case object ThreeOfAKind extends HandType
-case object TwoPair extends HandType
-case object OnePair extends HandType
-case object HighCard extends HandType
-
-object HandType {
-
-  implicit val ordering: Ordering[HandType] = Ordering.by {
-    case FiveOfAKind  => 7
-    case FourOfAKind  => 6
-    case FullHouse    => 5
-    case ThreeOfAKind => 4
-    case TwoPair      => 3
-    case OnePair      => 2
-    case HighCard     => 1
   }
 }
