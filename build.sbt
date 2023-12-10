@@ -5,5 +5,6 @@ ThisBuild / scalaVersion := "3.3.1"
 lazy val root = (project in file("."))
   .settings(
     name := "Advent-of-Code-2023",
-    idePackagePrefix := Some("io.github.avapl")
+    idePackagePrefix := Some("io.github.avapl"),
+    libraryDependencies += "com.softwaremill.quicklens" %% "quicklens" % "1.9.6"
   )

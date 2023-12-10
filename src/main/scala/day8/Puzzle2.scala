@@ -6,7 +6,7 @@ import scala.annotation.tailrec
 @main def puzzle2(): Unit = {
   val (directions, network) = PuzzleInputParser.parsedInput
   val startNodes = determineStartNodes(network)
-  val stepsStartToEnd = startNodes.map(countStepsStartToEnd(_, directions, network))
+  val stepsStartToEnd = startNodes.map(countStepsStartToEndForNode(_, directions, network))
   val result = leastCommonMultiple(stepsStartToEnd) // I'm disappointed that this works :(
   println(result)
 }
@@ -16,7 +16,7 @@ private def determineStartNodes(network: Network) =
     case (node, _) if node.endsWith(startNodePostfix) => node
   }.toList
 
-private def countStepsStartToEnd(node: Node, directions: Seq[Direction], network: Network): Long = {
+private def countStepsStartToEndForNode(node: Node, directions: Seq[Direction], network: Network): Long = {
   var stepsCount = 0L
 
   @tailrec
