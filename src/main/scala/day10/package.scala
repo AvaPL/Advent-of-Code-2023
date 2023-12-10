@@ -46,19 +46,3 @@ def determineStartTilePositionAndType(grid: Grid): (Position, Pipe) = {
   val startTilePosition = Position(startTileRow, startTileColumn)
   (startTilePosition, startTileType)
 }
-
-// TODO: Remove, debug only
-def prettyPrintGrid(grid: Grid): Unit =
-  grid.foreach { line =>
-    val linesPretty = line.map {
-      case Start     => 'S'
-      case Ground    => ' '
-      case UpDown    => '║'
-      case LeftRight => '═'
-      case UpRight   => '╚'
-      case UpLeft    => '╝'
-      case DownLeft  => '╗'
-      case DownRight => '╔'
-    }
-    println(linesPretty.mkString)
-  }

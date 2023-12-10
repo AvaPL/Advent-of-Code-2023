@@ -8,6 +8,7 @@ import com.softwaremill.quicklens.*
   val grid = PuzzleInputParser.parsedInput
   val (startTilePosition, startTileType) = determineStartTilePositionAndType(grid)
   val result = calculateLongestPath(grid, startTilePosition, startTileType)
+  prettyPrintGrid(grid)
   println(result)
 }
 
@@ -60,3 +61,18 @@ private def determinePositionsToVisit(position: Position, pipeType: Pipe) =
         position.modify(_.row).using(_ + 1),
         position.modify(_.column).using(_ + 1)
       )
+
+private def prettyPrintGrid(grid: Grid): Unit =
+  grid.foreach { line =>
+    val linesPretty = line.map {
+      case Start     => 'S'
+      case Ground    => '.'
+      case UpDown    => '║'
+      case LeftRight => '═'
+      case UpRight   => '╚'
+      case UpLeft    => '╝'
+      case DownLeft  => '╗'
+      case DownRight => '╔'
+    }
+    println(linesPretty.mkString)
+  }
