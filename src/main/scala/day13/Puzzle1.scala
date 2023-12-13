@@ -2,8 +2,8 @@ package io.github.avapl
 package day13
 
 @main def puzzle1(): Unit = {
-  val pattern = PuzzleInputParser.parsedInput
-  val mirrors = pattern.map(findMirror)
+  val patterns = PuzzleInputParser.parsedInput
+  val mirrors = patterns.map(findMirror)
   val scores = mirrors.map {
     case VerticalMirror(index)   => index
     case HorizontalMirror(index) => 100 * index
@@ -39,7 +39,3 @@ private def findHorizontalMirror(pattern: Pattern) = {
       HorizontalMirror(index)
     }
 }
-
-sealed trait Mirror
-case class VerticalMirror(index: Int) extends Mirror
-case class HorizontalMirror(index: Int) extends Mirror
