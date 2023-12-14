@@ -2,7 +2,6 @@ package io.github.avapl
 package day14
 
 import scala.annotation.tailrec
-import scala.util.matching.Regex
 import scala.util.chaining.*
 
 type Platform = Vector[String]
@@ -16,7 +15,7 @@ def moveRocksWest(platform: Platform) =
 
 @tailrec
 private def moveRocksLeft(row: String): String = {
-  val firstRockMovedLeft = row.replaceFirst(Regex.quote(s"$emptySpace$roundedRock"), s"$roundedRock$emptySpace")
+  val firstRockMovedLeft = row.replaceFirst(s"\\$emptySpace$roundedRock", s"$roundedRock$emptySpace")
   if (firstRockMovedLeft == row) row // no change, all rocks on the left
   else moveRocksLeft(firstRockMovedLeft)
 }
@@ -32,5 +31,5 @@ private def transposePlatform(platform: Platform) =
 
 def calculateLoad(platform: Platform) =
   platform.reverse.zipWithIndex.map { case (row, i) =>
-    row.count(_ == 'O') * (i + 1)
+    row.count(_ == roundedRock) * (i + 1)
   }.sum

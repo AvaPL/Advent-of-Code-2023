@@ -1,5 +1,5 @@
 package io.github.avapl
-package day12
+package day12.puzzle1
 
 import util.StringOps.*
 
@@ -33,7 +33,7 @@ private def toArrangement(conditionRecordValue: String)(damagedStateIndices: Set
 
 private def isArrangementValid(targetDamagedGroupSizes: List[Int])(arrangement: String) = {
   val arrangementDamagedGroupSizes = arrangement
-    .splitByRegex("\\.+")
+    .splitByRegex(s"\\$operationalState+")
     .collect {
       case group if group.nonEmpty => group.size
     }

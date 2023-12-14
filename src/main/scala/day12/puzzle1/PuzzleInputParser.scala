@@ -1,5 +1,5 @@
 package io.github.avapl
-package day12
+package day12.puzzle1
 
 import util.InputParser
 import util.StringOps.*
