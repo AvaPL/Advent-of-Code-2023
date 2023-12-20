@@ -31,6 +31,8 @@ case class Position(
   }
 }
 
+// Uses Pick's theorem:
+// area = innerPoints + outerPoints/2 - 1 <=> innerPoints + outerPoints = area + outerPoints/2 + 1
 def calculateTrenchArea(digPlan: DigPlan) = {
   val trenchVertices = calculateTrenchVertices(digPlan)
   shoelaceArea(trenchVertices) + perimeter(digPlan) / 2 + 1
