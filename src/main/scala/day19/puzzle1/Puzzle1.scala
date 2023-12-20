@@ -5,15 +5,15 @@ import scala.annotation.tailrec
 
 @main def puzzle1(): Unit = {
   val (workflows, parts) = PuzzleInputParser.parsedInput
-  val workflowNameToWorkflow = workflows.map(w => w.name -> w).toMap
-  val partsWithState = getPartStates(workflowNameToWorkflow, parts)
+  val partsWithState = getPartStates(workflows, parts)
   val acceptedParts = partsWithState.collect { case (part, Accept) => part }
   val acceptedPartsRatings = acceptedParts.map(_.rating)
   val result = acceptedPartsRatings.sum
   println(result)
 }
 
-private def getPartStates(workflowNameToWorkflow: Map[String, Workflow], parts: Seq[Part]) = {
+private def getPartStates(workflows: Seq[Workflow], parts: Seq[Part]) = {
+  val workflowNameToWorkflow = workflows.map(w => w.name -> w).toMap
 
   @tailrec
   def loop(workflow: Workflow, part: Part): PartState = {
