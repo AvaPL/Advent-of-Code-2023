@@ -29,5 +29,5 @@ private def countFallingChain(brickToCollidingBricks: Map[Brick, Set[Brick]])(br
     } else isChainReactionFinished = true
   }
 
-  desintegratedBricks.size - 1
+  desintegratedBricks.size - 1 // don't include the initial brick
 }
