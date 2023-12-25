@@ -25,14 +25,18 @@ private def findEdgesToCut(edges: Seq[Edge])(random: Random) = {
 
   while (compactedEdges.size != 3) {
     if (compactedEdges.isEmpty) // Reset, a cut of exactly 3 edges not found
-      compactedEdges = mutable.ArrayBuffer.from(edges.map(e => CompactedEdge(e.node1, e.node2, source = e)).toList)
+      compactedEdges = mutable.ArrayBuffer.from(edges.map(e => CompactedEdge(e.node1, e.node2, source = e)))
     else { // Compact two random nodes into one and remove edges between them
-      val CompactedEdge(removedNode, compactedNode, _) = compactedEdges.remove(random.between(0, compactedEdges.size))
+      val CompactedEdge(nodeToRemove, compactedNode, _) = compactedEdges.remove(random.between(0, compactedEdges.size))
       compactedEdges = compactedEdges.flatMap {
-        case CompactedEdge(`compactedNode`, `removedNode`, _) | CompactedEdge(`removedNode`, `compactedNode`, _) => Nil
-        case CompactedEdge(`removedNode`, node2, source) => CompactedEdge(compactedNode, node2, source) :: Nil
-        case CompactedEdge(node1, `removedNode`, source) => CompactedEdge(node1, compactedNode, source) :: Nil
-        case edge                                        => edge :: Nil
+        case CompactedEdge(`compactedNode`, `nodeToRemove`, _) | CompactedEdge(`nodeToRemove`, `compactedNode`, _) =>
+          Nil
+        case CompactedEdge(`nodeToRemove`, node2, source) =>
+          CompactedEdge(compactedNode, node2, source) :: Nil
+        case CompactedEdge(node1, `nodeToRemove`, source) =>
+          CompactedEdge(node1, compactedNode, source) :: Nil
+        case edge =>
+          edge :: Nil
       }
     }
   }
@@ -68,5 +72,5 @@ private def toNeighborsMap(edges: Seq[Edge]) = {
     .flatMap { case Edge(node1, node2) =>
       List(node1 -> node2, node2 -> node1)
     }
-    .groupMap(_._1)(_._2)
+    .groupMap((node, _) => node)((_, neighbor) => neighbor)
 }
