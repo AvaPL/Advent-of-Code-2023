@@ -46,7 +46,7 @@ private def findEdgesToCut(edges: Seq[Edge])(random: Random) = {
 
 private def toNodes(edges: Seq[Edge]) =
   edges.flatMap { case Edge(node1, node2) =>
-    Seq(node1, node2)
+    List(node1, node2)
   }.distinct
 
 private def nodeGroupSizes(edges: Seq[Edge]) = {
