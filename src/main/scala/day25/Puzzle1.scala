@@ -30,13 +30,13 @@ private def findEdgesToCut(edges: Seq[Edge])(random: Random) = {
       val CompactedEdge(nodeToRemove, compactedNode, _) = compactedEdges.remove(random.between(0, compactedEdges.size))
       compactedEdges = compactedEdges.flatMap {
         case CompactedEdge(`compactedNode`, `nodeToRemove`, _) | CompactedEdge(`nodeToRemove`, `compactedNode`, _) =>
-          Nil
+          None
         case CompactedEdge(`nodeToRemove`, node2, source) =>
-          CompactedEdge(compactedNode, node2, source) :: Nil
+          Some(CompactedEdge(compactedNode, node2, source))
         case CompactedEdge(node1, `nodeToRemove`, source) =>
-          CompactedEdge(node1, compactedNode, source) :: Nil
+          Some(CompactedEdge(node1, compactedNode, source))
         case edge =>
-          edge :: Nil
+          Some(edge)
       }
     }
   }
